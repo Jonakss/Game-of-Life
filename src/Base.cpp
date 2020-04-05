@@ -21,6 +21,31 @@ void Base::initWindow(){
 	this->window = new sf::RenderWindow(windowConf, title);
 	this->window->setFramerateLimit(frameRateLimit);
 	this->window->setVerticalSyncEnabled(vSync);
+
+	for(int i = 0; i < 10; i++){
+		for(int j = 0; j < 10; j++){
+			this->board[i][j] = new Cell(sf::Vector2f(i*10+i*1, j*10+j*1));			
+		}
+	}
+	for(int i = 0; i < 10; i++){
+		for(int j = 0; j < 10; j++){
+			if(i>0){
+				if (j<10-1) this->board[i][j]->addNeighbor(this->board[i-1][j+1]);
+				this->board[i][j]->addNeighbor(this->board[i-1][j]);
+				if(j>0) this->board[i][j]->addNeighbor(this->board[i-1][j-1]);
+			}
+			
+			if(j>0) this->board[i][j]->addNeighbor(this->board[i][j-1]);
+			if(j<10-1) this->board[i][j]->addNeighbor(this->board[i][j+1]);
+			
+			if(i<10-1){
+				if(j>0) this->board[i][j]->addNeighbor(this->board[i+1][j-1]);
+				this->board[i][j]->addNeighbor(this->board[i+1][j]);
+				if(j<10-1) this->board[i][j]->addNeighbor(this->board[i+1][j+1]);			
+			}
+
+		}
+	}
 };
 
 Base::Base(){
@@ -42,12 +67,23 @@ void Base::render(){
 	this->window->clear();
 
 	//render functions
+	for(int i = 0; i < 10; i++){
+		for(int j =0; j < 10; j++){
+			this->board[i][j]->draw(this->window);
+		}
+	}
 
 	this->window->display();
 };
 
 void Base::update(){
 	this->updateEvents();
+	
+	for(int i = 0; i < 10; i++){
+		for(int j = 0; j < 10; j++){
+			this->board[i][j]->update(this->dt);
+		}
+	}
 };
 
 void Base::updateEvents(){

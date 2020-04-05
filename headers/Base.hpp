@@ -4,11 +4,14 @@
 #include <iostream>
 #include <fstream>
 
+
 #include "SFML/System.hpp"
 #include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
 #include "SFML/Network.hpp"
+
+#include "../headers/Cell.hpp"
 
 class Base{
 private:
@@ -22,6 +25,8 @@ private:
 	sf::Clock dtClock;
 	//delta time
 	float dt;
+
+	Cell *board[10][10];
 
 	void initWindow();	
 public:
