@@ -22,28 +22,25 @@ void Base::initWindow(){
 	this->window->setFramerateLimit(frameRateLimit);
 	this->window->setVerticalSyncEnabled(vSync);
 
-	for(int i = 0; i < 10; i++){
-		for(int j = 0; j < 10; j++){
-			this->board[i][j] = new Cell(sf::Vector2f(i*10+i*1, j*10+j*1));			
+	for(int i = 0; i < this->COLS; i++){
+		for(int j = 0; j < this->ROWS; j++){
+			this->board[i][j] = new Cell(sf::Vector2f(i*10+i*1, j*10+j*1));
 		}
 	}
-	for(int i = 0; i < 10; i++){
-		for(int j = 0; j < 10; j++){
-			if(i>0){
-				if (j<10-1) this->board[i][j]->addNeighbor(this->board[i-1][j+1]);
-				this->board[i][j]->addNeighbor(this->board[i-1][j]);
-				if(j>0) this->board[i][j]->addNeighbor(this->board[i-1][j-1]);
+	for(int i = 0; i < this->COLS; i++){
+		for(int j = 0; j < this->ROWS; j++){
+			for(int a = -1; a < 2; a++){
+				for(int b = -1; b < 2; b++){
+					int x = (a+i+this->COLS)%this->COLS;
+					int y = (b+j+this->ROWS)%this->ROWS;
+					
+//					std::vector<Cell*>* v = this->board[i][j]->getNeighborhood();
+					if(this->board[i][j] != this->board[x][y]){ 
+//						v->push_back(this->board[x][y]);
+						this->board[i][j]->addNeighbor(this->board[x][y]->isAlive());
+					}
+				}
 			}
-			
-			if(j>0) this->board[i][j]->addNeighbor(this->board[i][j-1]);
-			if(j<10-1) this->board[i][j]->addNeighbor(this->board[i][j+1]);
-			
-			if(i<10-1){
-				if(j>0) this->board[i][j]->addNeighbor(this->board[i+1][j-1]);
-				this->board[i][j]->addNeighbor(this->board[i+1][j]);
-				if(j<10-1) this->board[i][j]->addNeighbor(this->board[i+1][j+1]);			
-			}
-
 		}
 	}
 };
@@ -67,8 +64,8 @@ void Base::render(){
 	this->window->clear();
 
 	//render functions
-	for(int i = 0; i < 10; i++){
-		for(int j =0; j < 10; j++){
+	for(int i = 0; i < this->COLS; i++){
+		for(int j =0; j < this->ROWS; j++){
 			this->board[i][j]->draw(this->window);
 		}
 	}
@@ -79,9 +76,24 @@ void Base::render(){
 void Base::update(){
 	this->updateEvents();
 	
-	for(int i = 0; i < 10; i++){
-		for(int j = 0; j < 10; j++){
+	for(int i = 0; i < this->COLS; i++){
+		for(int j = 0; j < this->ROWS; j++){
 			this->board[i][j]->update(this->dt);
+		}
+	}
+	for(int i = 0; i < this->COLS; i++){
+		for(int j = 0; j < this->ROWS; j++){
+			this->board[i][j]->clearNeighborhood();
+			for(int a = -1; a < 2; a++){
+				for(int b = -1; b < 2; b++){
+					int x = (a+i+this->COLS)%this->COLS;
+					int y = (b+j+this->ROWS)%this->ROWS;
+					
+					if(this->board[i][j] != this->board[x][y]){ 
+						this->board[i][j]->addNeighbor(this->board[x][y]->wasAlive());
+					}
+				}
+			}
 		}
 	}
 };

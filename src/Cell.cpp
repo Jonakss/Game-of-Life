@@ -1,7 +1,8 @@
 #include "../headers/Cell.hpp"
 
 Cell::Cell(sf::Vector2f p){
-//	this->pos = p;
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	srand(seed);
 	int a = rand() % 100;
 	if (a>50){
 		this->alive = this->pAlive = true;
@@ -11,7 +12,7 @@ Cell::Cell(sf::Vector2f p){
 	this->body = sf::RectangleShape();
 	this->body.setPosition(p);
 	this->body.setSize(sf::Vector2f(10,10));
-};;
+};
 
 Cell::~Cell(){
 //	delete this->neighborhood;
@@ -26,28 +27,32 @@ bool Cell::wasAlive(){
 };
 
 void Cell::draw(sf::RenderWindow* w){
-	if(this->alive)
-		this->body.setFillColor(sf::Color::Blue);
-	else
-		this->body.setFillColor(sf::Color::Red);	
-	
+	usleep(100);
 	w->draw(body);
 };
 
 void Cell::update(float dt){
-	this->pAlive = this->alive;
-	int c = 0, i =0;
-	while(i<8 && c<3){
-		if(this->neighborhood[i] != nullptr){
-			if(this->neighborhood[i]->wasAlive()) c++;
-		}
-		i++;
+	int c = 0;
+	//for(int i = 0; i < this->vneighborhood.size(); i++){
+	//	if(this->vneighborhood[i]->wasAlive()) c++;
+	//}
+	for(int i = 0; i < this->ineighborhood.size(); i++){
+		if(this->ineighborhood[i]) c++;
 	}
-
+	
+	//while(i<8){
+	//	if(this->neighborhood[i] != nullptr && neighborhood[i]->wasAlive()){ 
+	//		c++;
+	//	}
+	//	i++;
+	//}
+	this->pAlive = this->alive;
 	if(this->alive)
 		if(c<2 || c>3) this->alive = false;
-	else
+	else{
+//		std::cout << "I born!" << std::endl;
 		if(c=3) this->alive = true;
+	};
 
 	if(this->alive)
 		this->body.setFillColor(sf::Color::Blue);
@@ -55,14 +60,27 @@ void Cell::update(float dt){
 		this->body.setFillColor(sf::Color::Red);	
 };
 
-void Cell::addNeighbor(Cell *c){
+void Cell::addNeighbor(Cell* c){
 	int i = 0;
-	if(c != nullptr)
-		while(i<8 && neighborhood[i] == nullptr){
+	if(c!=nullptr)
+	while(i<8){
+		if(this->neighborhood[i] != nullptr) i++;
+		else{
 			this->neighborhood[i] = c;
-			i++;
-		};
+			i=9;
+		}
+		i++;
+	}
 };
 
+std::vector<Cell*>* Cell::getNeighborhood(){
+	return &this->vneighborhood;
+};
 
+void Cell::addNeighbor(bool b){
+	this->ineighborhood.push_back(b);
+};
 
+void Cell::clearNeighborhood(){
+	this->ineighborhood.clear();
+};

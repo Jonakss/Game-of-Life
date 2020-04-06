@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <unistd.h>
+#include <chrono>
 
 #include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
@@ -12,6 +13,8 @@
 class Cell{
 private:
 	Cell *neighborhood[8] = {};
+	std::vector<Cell*> vneighborhood = {};
+	std::vector<bool> ineighborhood = {};
 	bool alive, pAlive;
 
 	sf::RectangleShape body;
@@ -25,7 +28,10 @@ public:
 	bool wasAlive();
 	void draw(sf::RenderWindow* w);
 	void update(float dt);
-	void addNeighbor(Cell *c);
+	void addNeighbor(Cell* c);
+	std::vector<Cell*>* getNeighborhood();
+	void addNeighbor(bool b);
+	void clearNeighborhood();
 };
 
 #endif

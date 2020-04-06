@@ -15,6 +15,9 @@
 
 class Base{
 private:
+	static const int COLS=35;
+	static const int ROWS=35;	
+
 	const int HEIGHT = 800;
 	const int WIDTH = 600;
 	const char* TITLE = "SFML BASE";
@@ -26,7 +29,7 @@ private:
 	//delta time
 	float dt;
 
-	Cell *board[10][10];
+	Cell *board[COLS][ROWS];
 
 	void initWindow();	
 public:
