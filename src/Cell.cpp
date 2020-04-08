@@ -5,9 +5,11 @@ Cell::Cell(sf::Vector2f p){
 	srand(seed);
 	int a = rand() % 100;
 	if (a>50){
-		this->alive = this->pAlive = true;
+		this->alive = true;
+		this->pAlive = true;
 	}else{
-		this->alive = this->pAlive = false;
+		this->alive = false;
+		this->pAlive = false;
 	}
 	this->body = sf::RectangleShape();
 	this->body.setPosition(p);
@@ -27,37 +29,33 @@ bool Cell::wasAlive(){
 };
 
 void Cell::draw(sf::RenderWindow* w){
-	usleep(100);
 	w->draw(body);
 };
 
 void Cell::update(float dt){
 	int c = 0;
-	//for(int i = 0; i < this->vneighborhood.size(); i++){
-	//	if(this->vneighborhood[i]->wasAlive()) c++;
-	//}
+	this->pAlive = this->alive;
 	for(int i = 0; i < this->ineighborhood.size(); i++){
 		if(this->ineighborhood[i]) c++;
-	}
-	
-	//while(i<8){
-	//	if(this->neighborhood[i] != nullptr && neighborhood[i]->wasAlive()){ 
-	//		c++;
-	//	}
-	//	i++;
-	//}
-	this->pAlive = this->alive;
-	if(this->alive)
-		if(c<2 || c>3) this->alive = false;
-	else{
-//		std::cout << "I born!" << std::endl;
-		if(c=3) this->alive = true;
+		std::cout << this->ineighborhood[i] << " ";
 	};
-
-	if(this->alive)
-		this->body.setFillColor(sf::Color::Blue);
-	else
-		this->body.setFillColor(sf::Color::Red);	
+	std::cout << "C:" << c;
+	std::cout << "A " << this->alive << " ";
+	if(this->alive == true){
+		if((c<2) || (c>3)){
+		   	this->alive = false;
+		};
+	}else{
+		if(c==3){
+		   	this->alive = true;
+		};
+	};
+	if(this->alive == true){
+		this->body.setFillColor(sf::Color::Red);
+	}else{
+		this->body.setFillColor(sf::Color::Black);
+	};
+	std::cout << this->alive << " " << std::endl;
 };
 
 void Cell::addNeighbor(Cell* c){
