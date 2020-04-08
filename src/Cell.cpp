@@ -37,10 +37,7 @@ void Cell::update(float dt){
 	this->pAlive = this->alive;
 	for(int i = 0; i < this->ineighborhood.size(); i++){
 		if(this->ineighborhood[i]) c++;
-		std::cout << this->ineighborhood[i] << " ";
 	};
-	std::cout << "C:" << c;
-	std::cout << "A " << this->alive << " ";
 	if(this->alive == true){
 		if((c<2) || (c>3)){
 		   	this->alive = false;
@@ -55,7 +52,6 @@ void Cell::update(float dt){
 	}else{
 		this->body.setFillColor(sf::Color::Black);
 	};
-	std::cout << this->alive << " " << std::endl;
 };
 
 void Cell::addNeighbor(Cell* c){

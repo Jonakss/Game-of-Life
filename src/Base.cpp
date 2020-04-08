@@ -33,10 +33,7 @@ void Base::initWindow(){
 				for(int b = -1; b < 2; b++){
 					int x = (a+i+this->COLS)%this->COLS;
 					int y = (b+j+this->ROWS)%this->ROWS;
-					
-//					std::vector<Cell*>* v = this->board[i][j]->getNeighborhood();
 					if(!((a == 0) && (b == 0))){ 
-//						v->push_back(this->board[x][y]);
 						this->board[i][j]->addNeighbor(this->board[x][y]->wasAlive());
 					}
 				}
@@ -79,23 +76,19 @@ void Base::update(){
 	for(int i = 0; i < this->COLS; i++){
 		for(int j = 0; j < this->ROWS; j++){
 			this->board[i][j]->clearNeighborhood();
-//			std::cout << i << ", " << j << " -- ";
 			for(int a = -1; a < 2; a++){
 				for(int b = -1; b < 2; b++){
 					int x = (a+i+this->COLS)%this->COLS;
 					int y = (b+j+this->ROWS)%this->ROWS;
 					if(!((a == 0) && (b==0))){ 
 						this->board[i][j]->addNeighbor(this->board[x][y]->wasAlive());
-//						std::cout << x << ", " << y << " a" << a << ", b" << b << " ";
 					}
 				}
 			}
-//			std::cout << std::endl;
 		}
 	}
 	for(int i = 0; i < this->COLS; i++){
 		for(int j = 0; j < this->ROWS; j++){
-			std::cout << i << ", " << j << " = ";
 			this->board[i][j]->update(this->dt);
 		}
 	}
