@@ -32,6 +32,7 @@ public:
 	std::vector<Cell*>* getNeighborhood();
 	void addNeighbor(bool b);
 	void clearNeighborhood();
+	void revive();
 };
 
 #endif

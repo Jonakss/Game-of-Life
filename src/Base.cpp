@@ -71,8 +71,6 @@ void Base::render(){
 };
 
 void Base::update(){
-	this->updateEvents();
-	
 	for(int i = 0; i < this->COLS; i++){
 		for(int j = 0; j < this->ROWS; j++){
 			this->board[i][j]->clearNeighborhood();
@@ -97,16 +95,41 @@ void Base::update(){
 
 void Base::updateEvents(){
 	while(this->window->pollEvent(this->event)){
-		if(this->event.type == sf::Event::Closed)
-			this->window->close();
+		switch(this->event.type){
+			case sf::Event::Closed:
+				this->window->close();
+				break;
+			case sf::Event::MouseButtonPressed:
+				if(this->event.mouseButton.button == sf::Mouse::Left){
+					int mX = this->event.mouseButton.x;
+					int mY = this->event.mouseButton.y;
+					if(mX > 0 && mX < (this->COLS * 10) && mY > 0 && mY < (this->COLS * 10)){
+						this->board[(mX/10)][(mY/10)]->revive();
+						std::cout << "Mouse pos: ("<< mX << ", " << mY << ")." <<std::endl;
+					}
+				}
+				break;
+			case sf::Event::KeyPressed:
+				switch(this->event.key.code){
+					case sf::Keyboard::P:
+						this->pause = !this->pause;
+						break;
+					default: break;
+				};
+			default:
+				break;
+		}
 	}
 };
 
 void Base::run(){
 	while(this->window->isOpen()){
-		this->updateDt();
-		this->update();
-		this->render();
+		this->updateEvents();
+		if(!pause){
+			this->update();
+			this->updateDt();
+			this->render();
+		};
 	}
 };
 

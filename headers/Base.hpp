@@ -28,6 +28,7 @@ private:
 	sf::Clock dtClock;
 	//delta time
 	float dt;
+	bool pause = false;
 
 	Cell *board[COLS][ROWS];
 

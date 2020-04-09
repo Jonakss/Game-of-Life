@@ -30,6 +30,7 @@ bool Cell::wasAlive(){
 
 void Cell::draw(sf::RenderWindow* w){
 	w->draw(body);
+	//usleep(100);
 };
 
 void Cell::update(float dt){
@@ -78,3 +79,8 @@ void Cell::addNeighbor(bool b){
 void Cell::clearNeighborhood(){
 	this->ineighborhood.clear();
 };
+
+void Cell::revive(){
+	this->pAlive = this->alive = true;
+	this->body.setFillColor(sf::Color::Red);
+}
