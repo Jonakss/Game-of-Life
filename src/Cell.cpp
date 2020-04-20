@@ -93,12 +93,6 @@ void Cell::clearNeighborhood(){
 	this->ineighborhood.clear();
 };
 
-<<<<<<< HEAD
-void Cell::revive(){
-	this->pAlive = this->alive = true;
-	this->body.setFillColor(sf::Color::Red);
-}
-=======
 void Cell::setLive(bool b){
 	this->alive = this->pAlive = b;
 	this->updateColor();
@@ -108,4 +102,3 @@ void Cell::toggle(){
 	this->alive = this->pAlive = !this->alive;
 	this->updateColor();
 };
->>>>>>> master

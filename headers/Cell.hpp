@@ -34,12 +34,8 @@ public:
 	std::vector<Cell*>* getNeighborhood();
 	void addNeighbor(bool b);
 	void clearNeighborhood();
-<<<<<<< HEAD
-	void revive();
-=======
 	void setLive(bool b);
 	void toggle();
->>>>>>> master
 };
 
 #endif
