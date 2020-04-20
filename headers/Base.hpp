@@ -21,8 +21,11 @@ private:
 	const int HEIGHT = 800;
 	const int WIDTH = 600;
 	const char* TITLE = "SFML BASE";
+
 	sf::RenderWindow* window;
 	sf::Event event;
+
+	sf::RectangleShape cursor;
 
 	//Clock system
 	sf::Clock dtClock;
@@ -30,6 +33,8 @@ private:
 	float dt;
 
 	Cell *board[COLS][ROWS];
+
+	bool paused = false;
 
 	void initWindow();
 public:

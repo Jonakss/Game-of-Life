@@ -27,11 +27,14 @@ public:
 	bool isAlive();
 	bool wasAlive();
 	void draw(sf::RenderWindow* w);
+	void updateColor();
 	void update(float dt);
 	void addNeighbor(Cell* c);
 	std::vector<Cell*>* getNeighborhood();
 	void addNeighbor(bool b);
 	void clearNeighborhood();
+	void setLive(bool b);
+	void toggle();
 };
 
 #endif

@@ -17,7 +17,12 @@ Cell::Cell(sf::Vector2f p){
 };
 
 Cell::~Cell(){
-//	delete this->neighborhood;
+	for (size_t i = 0; i < 8; i++) {
+		delete this->neighborhood[i];
+	}
+	for (int i = 0; i < this->vneighborhood.size(); i++) {
+		delete this->vneighborhood[i];
+	}
 };
 
 bool Cell::isAlive(){
@@ -30,6 +35,14 @@ bool Cell::wasAlive(){
 
 void Cell::draw(sf::RenderWindow* w){
 	w->draw(body);
+};
+
+void Cell::updateColor(){
+	if(this->alive == true){
+		this->body.setFillColor(sf::Color::Red);
+	}else{
+		this->body.setFillColor(sf::Color::Black);
+	};
 };
 
 void Cell::update(float dt){
@@ -47,11 +60,7 @@ void Cell::update(float dt){
 		   	this->alive = true;
 		};
 	};
-	if(this->alive == true){
-		this->body.setFillColor(sf::Color::Red);
-	}else{
-		this->body.setFillColor(sf::Color::Black);
-	};
+	this->updateColor();
 };
 
 void Cell::addNeighbor(Cell* c){
@@ -77,4 +86,14 @@ void Cell::addNeighbor(bool b){
 
 void Cell::clearNeighborhood(){
 	this->ineighborhood.clear();
+};
+
+void Cell::setLive(bool b){
+	this->alive = this->pAlive = b;
+	this->updateColor();
+}
+
+void Cell::toggle(){
+	this->alive = this->pAlive = !this->alive;
+	this->updateColor();
 };

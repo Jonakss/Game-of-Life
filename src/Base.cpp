@@ -22,9 +22,16 @@ void Base::initWindow(){
 	this->window->setFramerateLimit(frameRateLimit);
 	this->window->setVerticalSyncEnabled(vSync);
 
+	this->cursor = sf::RectangleShape();
+	this->cursor.setPosition(0, 0);
+	this->cursor.setSize(sf::Vector2f(10,10));
+	this->cursor.setFillColor(sf::Color::Transparent);
+	this->cursor.setOutlineThickness(1);
+	this->cursor.setOutlineColor(sf::Color::Green);
+
 	for(int i = 0; i < this->COLS; i++){
 		for(int j = 0; j < this->ROWS; j++){
-			this->board[i][j] = new Cell(sf::Vector2f(i*10+i*1, j*10+j*1));
+			this->board[i][j] = new Cell(sf::Vector2f(i*10/*+i*1*/, j*10/*+j*1*/));
 		}
 	}
 	for(int i = 0; i < this->COLS; i++){
@@ -67,11 +74,12 @@ void Base::render(){
 		}
 	}
 
+	this->window->draw(this->cursor);
+
 	this->window->display();
 };
 
 void Base::update(){
-	this->updateEvents();
 
 	for(int i = 0; i < this->COLS; i++){
 		for(int j = 0; j < this->ROWS; j++){
@@ -97,15 +105,42 @@ void Base::update(){
 
 void Base::updateEvents(){
 	while(this->window->pollEvent(this->event)){
-		if(this->event.type == sf::Event::Closed)
-			this->window->close();
+		if (event.type == sf::Event::KeyPressed)
+    	if (event.key.code == sf::Keyboard::P)
+				this->paused = !this->paused;
+		if(this->event.type == sf::Event::Closed){
+				this->window->close();
+		}
+		if(this->event.type == sf::Event::MouseMoved){
+				this->cursor.setPosition(sf::Mouse::getPosition(*this->window).x/10*10 ,sf::Mouse::getPosition(*this->window).y/10*10);
+		}
+		if (this->event.type == sf::Event::MouseButtonPressed){
+				int mx = sf::Mouse::getPosition(*this->window).x/10;
+				int my = sf::Mouse::getPosition(*this->window).y/10;
+				if (event.mouseButton.button == sf::Mouse::Left)
+					this->board[mx][my]->toggle();
+				else if (event.mouseButton.button == sf::Mouse::Right)
+					continue;
+				else if (event.mouseButton.button == sf::Mouse::Middle)
+					continue;
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::C)){
+			for(int i = 0; i < this->COLS; i++){
+				for(int j = 0; j < this->ROWS; j++){
+					this->board[i][j]->setLive(false);
+				}
+			}
+		}
 	}
 };
 
 void Base::run(){
 	while(this->window->isOpen()){
-		this->updateDt();
-		this->update();
+		this->updateEvents();
+		if(!this->paused){
+			this->updateDt();
+			this->update();
+		}
 		this->render();
 	}
 };
