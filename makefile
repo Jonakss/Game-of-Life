@@ -3,23 +3,22 @@ CLIB=-L/opt/SFML-2.5.1/lib -lsfml-graphics -lsfml-window -lsfml-system
 CINCLUDE=-I/opt/SFML-2.5.1/include
 CFLAGS=-Wall -std=c++11
 DEPS=./headers/main.hpp ./headers/Base.hpp
-OBJ_MAIN=main.o Base.o Cell.o
+OF=./out
+OBJ_MAIN=$(OF)/main.o $(OF)/Base.o $(OF)/Cell.o
 EXEC=GOL
-
-all: GOL clean
 
 GOL: $(OBJ_MAIN)
 	$(CC) $(OBJ_MAIN) -o $(EXEC) $(CLIB) $(CINCLUDE)
 
-main.o: src/main.cpp
-	$(CC) -c src/main.cpp $(CINCLUDE)
+./out/main.o: src/main.cpp
+	$(CC) -c src/main.cpp $(CINCLUDE) -o $@
 
-Base.o: src/Base.cpp headers/Base.hpp
-	$(CC) -c src/Base.cpp $(CINCLUDE)
+./out/Base.o: src/Base.cpp headers/Base.hpp
+	$(CC) -c src/Base.cpp $(CINCLUDE) -o $@
 
-Cell.o: src/Cell.cpp headers/Cell.hpp
-	$(CC) -c src/Cell.cpp $(CINCLUDE)
+./out/Cell.o: src/Cell.cpp headers/Cell.hpp
+	$(CC) -c src/Cell.cpp $(CINCLUDE) -o $@
 
 clean:
-	rm -fr *.o
+	rm -fr $(OF)/*.o
 	echo "Cleaning done"

@@ -48,7 +48,6 @@ void Base::initWindow(){
 
 Base::Base(){
 	this->initWindow();
-
 };
 
 Base::~Base(){
