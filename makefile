@@ -4,11 +4,12 @@ CINCLUDE=-I/opt/SFML-2.5.1/include
 CFLAGS=-Wall -std=c++11
 DEPS=./headers/main.hpp ./headers/Base.hpp
 OBJ_MAIN=main.o Base.o Cell.o
+EXEC=GOL
 
 all: GOL clean
 
 GOL: $(OBJ_MAIN)
-	$(CC) $(OBJ_MAIN) -o Base $(CLIB) $(CINCLUDE)
+	$(CC) $(OBJ_MAIN) -o $(EXEC) $(CLIB) $(CINCLUDE)
 
 main.o: src/main.cpp
 	$(CC) -c src/main.cpp $(CINCLUDE)
@@ -16,7 +17,7 @@ main.o: src/main.cpp
 Base.o: src/Base.cpp headers/Base.hpp
 	$(CC) -c src/Base.cpp $(CINCLUDE)
 
-Base.o: src/Cell.cpp headers/Cell.hpp
+Cell.o: src/Cell.cpp headers/Cell.hpp
 	$(CC) -c src/Cell.cpp $(CINCLUDE)
 
 clean:
