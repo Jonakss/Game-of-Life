@@ -1,16 +1,7 @@
 #include "../headers/Cell.hpp"
 
 Cell::Cell(sf::Vector2f p){
-	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-	srand(seed);
-	int a = rand() % 100;
-	if (a>50){
-		this->alive = true;
-		this->pAlive = true;
-	}else{
-		this->alive = false;
-		this->pAlive = false;
-	}
+	this->random();
 	this->body = sf::RectangleShape();
 	this->body.setPosition(p);
 	this->body.setSize(sf::Vector2f(10,10));
@@ -22,6 +13,19 @@ Cell::~Cell(){
 	}
 	for (int i = 0; i < this->vneighborhood.size(); i++) {
 		delete this->vneighborhood[i];
+	}
+};
+
+void Cell::random(){
+	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+	srand(seed);
+	int a = rand() % 100;
+	if (a>50){
+		this->alive = true;
+		this->pAlive = true;
+	}else{
+		this->alive = false;
+		this->pAlive = false;
 	}
 };
 

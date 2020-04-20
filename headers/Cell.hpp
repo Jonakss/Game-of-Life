@@ -24,6 +24,7 @@ public:
 	Cell(sf::Vector2f p);
 	~Cell();
 
+	void random();
 	bool isAlive();
 	bool wasAlive();
 	void draw(sf::RenderWindow* w);

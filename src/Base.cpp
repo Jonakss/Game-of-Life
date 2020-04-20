@@ -105,24 +105,39 @@ void Base::update(){
 
 void Base::updateEvents(){
 	while(this->window->pollEvent(this->event)){
-		if (event.type == sf::Event::KeyPressed)
-    	if (event.key.code == sf::Keyboard::P)
-				this->paused = !this->paused;
-		if(this->event.type == sf::Event::Closed){
+		if(this->event.type == sf::Event::Closed)
 				this->window->close();
-		}
+		if (event.type == sf::Event::KeyPressed)
+			if (event.key.code == sf::Keyboard::P)
+				this->paused = !this->paused;
+		if (event.type == sf::Event::KeyPressed)
+			if (event.key.code == sf::Keyboard::R){
+				for(int i = 0; i < this->COLS; i++){
+					for(int j = 0; j < this->ROWS; j++){
+						unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+						srand(seed);
+						int a = rand() % 100;
+						this->board[i][j]->setLive(a>75);
+					}
+				}
+			};
 		if(this->event.type == sf::Event::MouseMoved){
-				this->cursor.setPosition(sf::Mouse::getPosition(*this->window).x/10*10 ,sf::Mouse::getPosition(*this->window).y/10*10);
+			int mx = sf::Mouse::getPosition(*this->window).x/10;
+			int my = sf::Mouse::getPosition(*this->window).y/10;
+			if(((mx>=0)&&(mx<COLS))&&((my>=0)&&(my<ROWS)))
+				this->cursor.setPosition(mx*10, my*10);
 		}
 		if (this->event.type == sf::Event::MouseButtonPressed){
 				int mx = sf::Mouse::getPosition(*this->window).x/10;
 				int my = sf::Mouse::getPosition(*this->window).y/10;
-				if (event.mouseButton.button == sf::Mouse::Left)
-					this->board[mx][my]->toggle();
-				else if (event.mouseButton.button == sf::Mouse::Right)
-					continue;
-				else if (event.mouseButton.button == sf::Mouse::Middle)
-					continue;
+				if(((mx>=0)&&(mx<COLS))&&((my>=0)&&(my<ROWS))){
+					if (event.mouseButton.button == sf::Mouse::Left)
+						this->board[mx][my]->toggle();
+					else if (event.mouseButton.button == sf::Mouse::Right)
+						continue;
+					else if (event.mouseButton.button == sf::Mouse::Middle)
+						continue;
+				};
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::C)){
 			for(int i = 0; i < this->COLS; i++){

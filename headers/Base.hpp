@@ -15,8 +15,8 @@
 
 class Base{
 private:
-	static const int COLS=100;
-	static const int ROWS=100;
+	static const int COLS=25;
+	static const int ROWS=25;
 
 	const int HEIGHT = 800;
 	const int WIDTH = 600;
