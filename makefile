@@ -1,17 +1,24 @@
 CC=g++
-CLIB=-lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
+CLIB=-L/opt/SFML-2.5.1/lib -lsfml-graphics -lsfml-window -lsfml-system
+CINCLUDE=-I/opt/SFML-2.5.1/include
 CFLAGS=-Wall -std=c++11
 DEPS=./headers/main.hpp ./headers/Base.hpp
-OBJ_MAIN=main.o Base.o
+OF=./out
+OBJ_MAIN=$(OF)/main.o $(OF)/Base.o $(OF)/Cell.o
+EXEC=GOL
 
-Base: $(OBJ_MAIN)
-	$(CC) -o Base -L/usr/lib/SFML-2.5.1/lib -I/lib/usr/SFML-2.5.1/include $(OBJ_MAIN)
+GOL: $(OBJ_MAIN)
+	$(CC) $(OBJ_MAIN) -o $(EXEC) $(CLIB) $(CINCLUDE)
 
-main.o: src/main.cpp
-	$(CC) -c src/main.cpp $(CFLAGS)
+./out/main.o: src/main.cpp
+	$(CC) -c src/main.cpp $(CINCLUDE) -o $@
 
-Base.o: src/Base.cpp headers/Base.hpp
-	$(CC) -c src/Base.cpp $(CFLAGS)
+./out/Base.o: src/Base.cpp headers/Base.hpp
+	$(CC) -c src/Base.cpp $(CINCLUDE) -o $@
 
-.PHONY: clean
-	rm -fr *.o
+./out/Cell.o: src/Cell.cpp headers/Cell.hpp
+	$(CC) -c src/Cell.cpp $(CINCLUDE) -o $@
+
+clean:
+	rm -fr $(OF)/*.o
+	echo "Cleaning done"

@@ -1,6 +1,22 @@
 #include "../headers/Cell.hpp"
 
 Cell::Cell(sf::Vector2f p){
+	this->random();
+	this->body = sf::RectangleShape();
+	this->body.setPosition(p);
+	this->body.setSize(sf::Vector2f(10,10));
+};
+
+Cell::~Cell(){
+	for (size_t i = 0; i < 8; i++) {
+		delete this->neighborhood[i];
+	}
+	for (int i = 0; i < this->vneighborhood.size(); i++) {
+		delete this->vneighborhood[i];
+	}
+};
+
+void Cell::random(){
 	unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
 	srand(seed);
 	int a = rand() % 100;
@@ -11,13 +27,6 @@ Cell::Cell(sf::Vector2f p){
 		this->alive = false;
 		this->pAlive = false;
 	}
-	this->body = sf::RectangleShape();
-	this->body.setPosition(p);
-	this->body.setSize(sf::Vector2f(10,10));
-};
-
-Cell::~Cell(){
-//	delete this->neighborhood;
 };
 
 bool Cell::isAlive(){
@@ -31,6 +40,14 @@ bool Cell::wasAlive(){
 void Cell::draw(sf::RenderWindow* w){
 	w->draw(body);
 	//usleep(100);
+};
+
+void Cell::updateColor(){
+	if(this->alive == true){
+		this->body.setFillColor(sf::Color::Red);
+	}else{
+		this->body.setFillColor(sf::Color::Black);
+	};
 };
 
 void Cell::update(float dt){
@@ -48,11 +65,7 @@ void Cell::update(float dt){
 		   	this->alive = true;
 		};
 	};
-	if(this->alive == true){
-		this->body.setFillColor(sf::Color::Red);
-	}else{
-		this->body.setFillColor(sf::Color::Black);
-	};
+	this->updateColor();
 };
 
 void Cell::addNeighbor(Cell* c){
@@ -80,7 +93,19 @@ void Cell::clearNeighborhood(){
 	this->ineighborhood.clear();
 };
 
+<<<<<<< HEAD
 void Cell::revive(){
 	this->pAlive = this->alive = true;
 	this->body.setFillColor(sf::Color::Red);
 }
+=======
+void Cell::setLive(bool b){
+	this->alive = this->pAlive = b;
+	this->updateColor();
+}
+
+void Cell::toggle(){
+	this->alive = this->pAlive = !this->alive;
+	this->updateColor();
+};
+>>>>>>> master

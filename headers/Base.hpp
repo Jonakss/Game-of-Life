@@ -15,16 +15,19 @@
 
 class Base{
 private:
-	static const int COLS=100;
-	static const int ROWS=100;	
+	static const int COLS=50;
+	static const int ROWS=50;
 
 	const int HEIGHT = 800;
 	const int WIDTH = 600;
 	const char* TITLE = "SFML BASE";
+
 	sf::RenderWindow* window;
 	sf::Event event;
 
-	//Clock
+	sf::RectangleShape cursor;
+
+	//Clock system
 	sf::Clock dtClock;
 	//delta time
 	float dt;
@@ -32,7 +35,9 @@ private:
 
 	Cell *board[COLS][ROWS];
 
-	void initWindow();	
+	bool paused = false;
+
+	void initWindow();
 public:
 	Base();
 	~Base();

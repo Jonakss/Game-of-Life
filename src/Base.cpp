@@ -1,7 +1,7 @@
 #include "../headers/Base.hpp"
 
 void Base::initWindow(){
-	
+
 	std::ifstream ifs("config/window.conf");
 
 	sf::VideoMode windowConf(800,600);
@@ -17,14 +17,18 @@ void Base::initWindow(){
 	}
 
 	ifs.close();
-	
+
 	this->window = new sf::RenderWindow(windowConf, title);
 	this->window->setFramerateLimit(frameRateLimit);
 	this->window->setVerticalSyncEnabled(vSync);
 
+	this->cursor = sf::RectangleShape(sf::Vector2f(8, 8));
+	this->cursor.setFillColor(sf::Color::Transparent);
+	this->cursor.setOutlineThickness(1);
+
 	for(int i = 0; i < this->COLS; i++){
 		for(int j = 0; j < this->ROWS; j++){
-			this->board[i][j] = new Cell(sf::Vector2f(i*10+i*1, j*10+j*1));
+			this->board[i][j] = new Cell(sf::Vector2f(i*10/*+i*1*/, j*10/*+j*1*/));
 		}
 	}
 	for(int i = 0; i < this->COLS; i++){
@@ -33,7 +37,7 @@ void Base::initWindow(){
 				for(int b = -1; b < 2; b++){
 					int x = (a+i+this->COLS)%this->COLS;
 					int y = (b+j+this->ROWS)%this->ROWS;
-					if(!((a == 0) && (b == 0))){ 
+					if(!((a == 0) && (b == 0))){
 						this->board[i][j]->addNeighbor(this->board[x][y]->wasAlive());
 					}
 				}
@@ -44,7 +48,6 @@ void Base::initWindow(){
 
 Base::Base(){
 	this->initWindow();
-
 };
 
 Base::~Base(){
@@ -67,10 +70,16 @@ void Base::render(){
 		}
 	}
 
+	this->window->draw(this->cursor);
+
 	this->window->display();
 };
 
 void Base::update(){
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
 	for(int i = 0; i < this->COLS; i++){
 		for(int j = 0; j < this->ROWS; j++){
 			this->board[i][j]->clearNeighborhood();
@@ -78,7 +87,7 @@ void Base::update(){
 				for(int b = -1; b < 2; b++){
 					int x = (a+i+this->COLS)%this->COLS;
 					int y = (b+j+this->ROWS)%this->ROWS;
-					if(!((a == 0) && (b==0))){ 
+					if(!((a == 0) && (b==0))){
 						this->board[i][j]->addNeighbor(this->board[x][y]->wasAlive());
 					}
 				}
@@ -95,6 +104,7 @@ void Base::update(){
 
 void Base::updateEvents(){
 	while(this->window->pollEvent(this->event)){
+<<<<<<< HEAD
 		switch(this->event.type){
 			case sf::Event::Closed:
 				this->window->close();
@@ -118,6 +128,53 @@ void Base::updateEvents(){
 				};
 			default:
 				break;
+=======
+		if(this->event.type == sf::Event::Closed)
+				this->window->close();
+		if (event.type == sf::Event::KeyPressed)
+			if (event.key.code == sf::Keyboard::P)
+				this->paused = !this->paused;
+		if (event.type == sf::Event::KeyPressed)
+			if (event.key.code == sf::Keyboard::R){
+				for(int i = 0; i < this->COLS; i++){
+					for(int j = 0; j < this->ROWS; j++){
+						unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+						srand(seed);
+						int a = rand() % 100;
+						this->board[i][j]->setLive(a>75);
+					}
+				}
+			};
+		if(this->event.type == sf::Event::MouseMoved){
+			int mx = sf::Mouse::getPosition(*this->window).x/10;
+			int my = sf::Mouse::getPosition(*this->window).y/10;
+			if(((mx>=0)&&(mx<COLS))&&((my>=0)&&(my<ROWS))){
+				this->cursor.setPosition(mx*10+1, my*10+1);
+				if(this->board[mx][my]->isAlive())
+					this->cursor.setOutlineColor(sf::Color::Black);
+				else
+					this->cursor.setOutlineColor(sf::Color::Red);
+			}
+		}
+		if (this->event.type == sf::Event::MouseButtonPressed){
+				int mx = sf::Mouse::getPosition(*this->window).x/10;
+				int my = sf::Mouse::getPosition(*this->window).y/10;
+				if(((mx>=0)&&(mx<COLS))&&((my>=0)&&(my<ROWS))){
+					if (event.mouseButton.button == sf::Mouse::Left)
+						this->board[mx][my]->toggle();
+					else if (event.mouseButton.button == sf::Mouse::Right)
+						continue;
+					else if (event.mouseButton.button == sf::Mouse::Middle)
+						continue;
+				};
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::C)){
+			for(int i = 0; i < this->COLS; i++){
+				for(int j = 0; j < this->ROWS; j++){
+					this->board[i][j]->setLive(false);
+				}
+			}
+>>>>>>> master
 		}
 	}
 };
@@ -125,11 +182,18 @@ void Base::updateEvents(){
 void Base::run(){
 	while(this->window->isOpen()){
 		this->updateEvents();
+<<<<<<< HEAD
 		if(!pause){
 			this->update();
 			this->updateDt();
 			this->render();
 		};
+=======
+		if(!this->paused){
+			this->updateDt();
+			this->update();
+		}
+		this->render();
+>>>>>>> master
 	}
 };
-
