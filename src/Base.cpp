@@ -22,12 +22,9 @@ void Base::initWindow(){
 	this->window->setFramerateLimit(frameRateLimit);
 	this->window->setVerticalSyncEnabled(vSync);
 
-	this->cursor = sf::RectangleShape();
-	this->cursor.setPosition(0, 0);
-	this->cursor.setSize(sf::Vector2f(10,10));
+	this->cursor = sf::RectangleShape(sf::Vector2f(8, 8));
 	this->cursor.setFillColor(sf::Color::Transparent);
 	this->cursor.setOutlineThickness(1);
-	this->cursor.setOutlineColor(sf::Color::Green);
 
 	for(int i = 0; i < this->COLS; i++){
 		for(int j = 0; j < this->ROWS; j++){
@@ -124,8 +121,13 @@ void Base::updateEvents(){
 		if(this->event.type == sf::Event::MouseMoved){
 			int mx = sf::Mouse::getPosition(*this->window).x/10;
 			int my = sf::Mouse::getPosition(*this->window).y/10;
-			if(((mx>=0)&&(mx<COLS))&&((my>=0)&&(my<ROWS)))
-				this->cursor.setPosition(mx*10, my*10);
+			if(((mx>=0)&&(mx<COLS))&&((my>=0)&&(my<ROWS))){
+				this->cursor.setPosition(mx*10+1, my*10+1);
+				if(this->board[mx][my]->isAlive())
+					this->cursor.setOutlineColor(sf::Color::Black);
+				else
+					this->cursor.setOutlineColor(sf::Color::Red);
+			}
 		}
 		if (this->event.type == sf::Event::MouseButtonPressed){
 				int mx = sf::Mouse::getPosition(*this->window).x/10;
