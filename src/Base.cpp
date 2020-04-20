@@ -1,7 +1,7 @@
 #include "../headers/Base.hpp"
 
 void Base::initWindow(){
-	
+
 	std::ifstream ifs("config/window.conf");
 
 	sf::VideoMode windowConf(800,600);
@@ -17,7 +17,7 @@ void Base::initWindow(){
 	}
 
 	ifs.close();
-	
+
 	this->window = new sf::RenderWindow(windowConf, title);
 	this->window->setFramerateLimit(frameRateLimit);
 	this->window->setVerticalSyncEnabled(vSync);
@@ -33,7 +33,7 @@ void Base::initWindow(){
 				for(int b = -1; b < 2; b++){
 					int x = (a+i+this->COLS)%this->COLS;
 					int y = (b+j+this->ROWS)%this->ROWS;
-					if(!((a == 0) && (b == 0))){ 
+					if(!((a == 0) && (b == 0))){
 						this->board[i][j]->addNeighbor(this->board[x][y]->wasAlive());
 					}
 				}
@@ -72,7 +72,7 @@ void Base::render(){
 
 void Base::update(){
 	this->updateEvents();
-	
+
 	for(int i = 0; i < this->COLS; i++){
 		for(int j = 0; j < this->ROWS; j++){
 			this->board[i][j]->clearNeighborhood();
@@ -80,7 +80,7 @@ void Base::update(){
 				for(int b = -1; b < 2; b++){
 					int x = (a+i+this->COLS)%this->COLS;
 					int y = (b+j+this->ROWS)%this->ROWS;
-					if(!((a == 0) && (b==0))){ 
+					if(!((a == 0) && (b==0))){
 						this->board[i][j]->addNeighbor(this->board[x][y]->wasAlive());
 					}
 				}
@@ -109,4 +109,3 @@ void Base::run(){
 		this->render();
 	}
 };
-

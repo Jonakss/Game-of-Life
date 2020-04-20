@@ -16,7 +16,7 @@
 class Base{
 private:
 	static const int COLS=100;
-	static const int ROWS=100;	
+	static const int ROWS=100;
 
 	const int HEIGHT = 800;
 	const int WIDTH = 600;
@@ -24,14 +24,14 @@ private:
 	sf::RenderWindow* window;
 	sf::Event event;
 
-	//Clock
+	//Clock system
 	sf::Clock dtClock;
 	//delta time
 	float dt;
 
 	Cell *board[COLS][ROWS];
 
-	void initWindow();	
+	void initWindow();
 public:
 	Base();
 	~Base();

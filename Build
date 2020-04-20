@@ -1,0 +1,4 @@
+g++ -c src/main.cpp src/Base.cpp -I/opt/SFML-2.5.1/include
+g++ main.o Base.o -o SFML-Base -L/opt/SFML-2.5.1/lib -lsfml-graphics -lsfml-window -lsfml-system -I/opt/SFML-2.5.1/include
+./SFML-Base
+export LD_LIBRARY_PATH=/opt/SFML-2.5.1/lib
